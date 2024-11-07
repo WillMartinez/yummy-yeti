@@ -18,3 +18,26 @@ export const RECIPE_SUBCATEGORIES = {
 
 export type RecipeCategory = typeof RECIPE_CATEGORIES[number];
 export type RecipeSubCategory = typeof RECIPE_SUBCATEGORIES[RecipeCategory][number];
+
+export interface Recipe {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: "EASY" | "MEDIUM" | "HARD";
+  category: RecipeCategory;
+  subCategory: RecipeSubCategory;
+  ingredients: {
+    item: string;
+    amount: number;
+    unit: string;
+  }[];
+  instructions: string[];
+  prepTime: number; // in minutes
+  cookTime: number; // in minutes
+  servings: number;
+  imageID?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type CreateRecipeInput = Omit<Recipe, 'id' | 'createdAt' | 'updatedAt'>;

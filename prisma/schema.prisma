@@ -3,23 +3,25 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Recipe {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   title       String
   description String
   difficulty  String
   category    String
   subCategory String
-  ingredients String
-  instructions String
+  ingredients Json
+  instructions Json
   prepTime    Int
   cookTime    Int
   servings    Int
-  imageUrl    String?
+  imageID    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("recipes")
 }

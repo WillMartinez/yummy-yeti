@@ -1,7 +1,6 @@
 "use client";
 import { CldImage } from "next-cloudinary";
 import Link from "next/link";
-import toast from "react-hot-toast";
 import { RECIPE_CATEGORIES } from "./constants";
 
 export default function Home() {
@@ -13,21 +12,23 @@ export default function Home() {
       cookTime: "30 mins",
       difficulty: "Medium",
       imageId: "pizza_pzkqcv", // Changed from "samples/food/pizza"
+      category: RECIPE_CATEGORIES[0],
     },
     {
       id: 2,
       title: "Shrimp Pasta",
       cookTime: "30 mins",
       difficulty: "Medium",
-      imageId: "shrimp-pasta_wvfxty", // Add your image
+      imageId: "p8cf7mh9xj82ijnqijiw", // Add your image
+      category: RECIPE_CATEGORIES[1],
     },
     {
       id: 3,
-      title: "Chocolate Cake",
+      title: "Pumpkin Pie",
       cookTime: "45 mins",
       difficulty: "Medium",
-      imageUrl: "/placeholder-cake.jpg", // Add your image
-      imageId: "elgfntiwag243jyfmzib", // Add your image
+      imageId: "oocyvdiqmyscxz8yafdf", // Add your image
+      category: RECIPE_CATEGORIES[2],
     },
   ];
 
@@ -40,7 +41,7 @@ export default function Home() {
             Martinez Meal Menu
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Find and share the best recipes from around the world
+            Find and share the best recipes from the Martinez Mi Familia
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link
@@ -53,7 +54,7 @@ export default function Home() {
               href="/create"
               className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
             >
-              Share Recipe
+              Add Recipe
             </Link>
           </div>
         </section>
@@ -89,6 +90,7 @@ export default function Home() {
                     <div className="flex gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
                       <span>⏱ {recipe.cookTime}</span>
                       <span>📊 {recipe.difficulty}</span>
+                      <span>🏷️ {recipe.category}</span>
                     </div>
                   </div>
                 </div>
@@ -113,18 +115,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <button
-        onClick={() => toast.success("Recipe created successfully!")}
-        className="button-styles"
-      >
-        Test Toast Success
-      </button>
-      <button
-        onClick={() => toast.error("Something went wrong!")}
-        className="button-styles"
-      >
-        Test Toast
-      </button>
     </div>
   );
 }

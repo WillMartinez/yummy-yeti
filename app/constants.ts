@@ -1,23 +1,50 @@
 export const RECIPE_CATEGORIES = [
-  "Main Course",
-  "Desserts",
-  "Appetizers",
-  "Breakfast",
-  "Snack",
+  "Appetizer",
   "Beverage",
+  "Breakfast",
+  "Dessert",
+  "Main Course",
+  "Side Dish",
+  "Snack",
+  "Soup",
 ] as const;
 
-export const RECIPE_SUBCATEGORIES = {
+export const RECIPE_SUBCATEGORIES: Record<RecipeCategory, string[]> = {
   "Main Course": ["Chicken", "Beef", "Fish", "Vegetarian"],
-  "Desserts": ["Cakes", "Cookies", "Pies", "Ice Cream"],
-  "Appetizers": ["Hot", "Cold", "Dips", "Finger Foods"],
+  "Appetizer": ["Hot", "Cold", "Soups"],
+  "Dessert": ["Cakes", "Cookies", "Ice Cream"],
+  "Side Dish": ["Potatoes", "Vegetables", "Salads"],
   "Breakfast": ["Oatmeal", "Pancakes", "Eggs", "Smoothies"],
   "Snack": ["Fruit", "Veggies", "Nuts", "Granola Bars"],
   "Beverage": ["Coffee", "Tea", "Juice", "Smoothies"],
+  "Soup": ["Soups"],
+};
+
+export const RECIPE_UNITS = {
+  volume: [
+    { value: 'tsp', label: 'tsp' },
+    { value: 'tbsp', label: 'tbsp' },
+    { value: 'cup', label: 'cup' },
+    { value: 'fl oz', label: 'fl oz' },
+    { value: 'ml', label: 'ml' },
+    { value: 'l', label: 'l' },
+  ],
+  weight: [
+    { value: 'g', label: 'g' },
+    { value: 'kg', label: 'kg' },
+    { value: 'oz', label: 'oz' },
+    { value: 'lb', label: 'lb' },
+  ],
+  other: [
+    { value: 'piece', label: 'piece' },
+    { value: 'pinch', label: 'pinch' },
+    { value: 'to taste', label: 'to taste' },
+  ]
 } as const;
 
 export type RecipeCategory = typeof RECIPE_CATEGORIES[number];
-export type RecipeSubCategory = typeof RECIPE_SUBCATEGORIES[RecipeCategory][number];
+export type RecipeSubCategory = string;
+export type RecipeUnit = typeof RECIPE_UNITS[keyof typeof RECIPE_UNITS][number]['value'];
 
 export interface Recipe {
   id: string;

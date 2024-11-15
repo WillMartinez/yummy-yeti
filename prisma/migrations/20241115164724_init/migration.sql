@@ -11,6 +11,7 @@ CREATE TABLE "recipes" (
     "prepTime" INTEGER NOT NULL,
     "cookTime" INTEGER NOT NULL,
     "servings" INTEGER NOT NULL,
+    "featured" BOOLEAN NOT NULL DEFAULT false,
     "imageID" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

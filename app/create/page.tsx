@@ -11,8 +11,9 @@ import {
   RECIPE_UNITS,
 } from "../constants";
 import TimeSelector from "@/components/TimeSelector";
+import toast from "react-hot-toast";
 
-export default function ShareRecipe() {
+export default function CreateRecipe() {
   const [formData, setFormData] = useState<CreateRecipeInput>({
     title: "",
     description: "",
@@ -37,7 +38,6 @@ export default function ShareRecipe() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Handle form submission
     try {
       const response = await fetch("/api/recipes", {
         method: "POST",
@@ -49,12 +49,32 @@ export default function ShareRecipe() {
 
       if (!response.ok) throw new Error("Failed to create recipe");
 
-      // Handle success (e.g., show message, reset form, redirect)
+      // Reset form data
+      setFormData({
+        title: "",
+        description: "",
+        difficulty: "EASY",
+        category: "Main Course",
+        subCategory: "",
+        ingredients: [],
+        instructions: [],
+        prepTime: 0,
+        cookTime: 0,
+        imageID: "",
+        servings: 0,
+      });
+
+      // Reset current ingredient and instruction
+      setCurrentIngredient({ item: "", amount: "", unit: "" });
+      setCurrentInstruction("");
+
+      // Show success message
+      toast.success("Recipe created successfully!");
+
     } catch (error) {
       console.error("Error creating recipe:", error);
-      // Handle error (e.g., show error message)
+      toast.error("Failed to create recipe. Please try again.");
     }
-    console.log(formData);
   };
 
   return (
@@ -68,7 +88,7 @@ export default function ShareRecipe() {
         </Link>
       </div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Share Your Recipe</h1>
+        <h1 className="text-3xl font-bold">Create Your Recipe</h1>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -216,8 +236,10 @@ export default function ShareRecipe() {
           <div>
             <ImageUpload
               onUploadSuccess={(publicId: string) => {
-                console.log("Uploaded image public ID:", publicId);
-                setFormData({ ...formData, imageID: publicId });
+                setFormData((prevData) => ({
+                  ...prevData,
+                  imageID: publicId
+                }));
               }}
             />
           </div>
@@ -254,9 +276,8 @@ export default function ShareRecipe() {
                     })
                   }
                   className="w-24 p-2 border rounded-md"
-                  required
                 >
-                  <option value="">Amount</option>
+                  <option value="" disabled>Amount</option>
                   {/* Fractions */}
                   <option value="0.125">1/8</option>
                   <option value="0.25">1/4</option>
@@ -281,9 +302,8 @@ export default function ShareRecipe() {
                     })
                   }
                   className="w-24 p-2 border rounded-md"
-                  required
                 >
-                  <option value="">Unit</option>
+                  <option value="" disabled>Unit</option>
                   <optgroup label="Volume">
                     {RECIPE_UNITS.volume.map(({ value, label }) => (
                       <option key={value} value={value}>{label}</option>
@@ -302,6 +322,7 @@ export default function ShareRecipe() {
                 </select>
                 <button
                   type="button"
+                  disabled={!currentIngredient.item || !currentIngredient.amount || !currentIngredient.unit}
                   onClick={() => {
                     if (
                       currentIngredient.item &&
@@ -322,7 +343,11 @@ export default function ShareRecipe() {
                       setCurrentIngredient({ item: "", amount: "", unit: "" });
                     }
                   }}
-                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
+                  className={`px-4 py-2 rounded-md transition-colors ${
+                    !currentIngredient.item || !currentIngredient.amount || !currentIngredient.unit
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-green-500 text-white hover:bg-green-600'
+                  }`}
                 >
                   Add
                 </button>
@@ -335,7 +360,11 @@ export default function ShareRecipe() {
                     className="flex items-center justify-between bg-gray-50 p-2 rounded-md"
                   >
                     <span>
-                      {ingredient.amount} {ingredient.amount > 1 ? `${ingredient.unit}s` : ingredient.unit} {ingredient.item}
+                      {ingredient.amount} {
+                        ['small', 'medium', 'large'].includes(ingredient.unit)
+                          ? `${ingredient.unit} ${ingredient.amount > 1 ? `${ingredient.item}s` : ingredient.item}`
+                          : `${ingredient.amount > 1 ? `${ingredient.unit}s` : ingredient.unit} ${ingredient.item}`
+                      }
                     </span>
                     <button
                       type="button"
@@ -376,6 +405,7 @@ export default function ShareRecipe() {
                 />
                 <button
                   type="button"
+                  disabled={!currentInstruction?.trim()}
                   onClick={() => {
                     if (currentInstruction?.trim()) {
                       setFormData({
@@ -385,7 +415,11 @@ export default function ShareRecipe() {
                       setCurrentInstruction('');
                     }
                   }}
-                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
+                  className={`px-4 py-2 rounded-md transition-colors ${
+                    !currentInstruction?.trim()
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-green-500 text-white hover:bg-green-600'
+                  }`}
                 >
                   Add Step
                 </button>
@@ -427,7 +461,7 @@ export default function ShareRecipe() {
           type="submit"
           className="w-full bg-blue-500 text-white py-3 rounded-lg mt-8"
         >
-          Share Recipe
+          Create Recipe
         </button>
       </form>
     </main>

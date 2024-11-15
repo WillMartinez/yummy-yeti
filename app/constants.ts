@@ -11,40 +11,46 @@ export const RECIPE_CATEGORIES = [
 
 export const RECIPE_SUBCATEGORIES: Record<RecipeCategory, string[]> = {
   "Main Course": ["Chicken", "Beef", "Fish", "Vegetarian"],
-  "Appetizer": ["Hot", "Cold", "Soups"],
-  "Dessert": ["Cakes", "Cookies", "Ice Cream"],
+  Appetizer: ["Hot", "Cold", "Soups"],
+  Dessert: ["Cakes", "Cookies", "Ice Cream"],
   "Side Dish": ["Potatoes", "Vegetables", "Salads"],
-  "Breakfast": ["Oatmeal", "Pancakes", "Eggs", "Smoothies"],
-  "Snack": ["Fruit", "Veggies", "Nuts", "Granola Bars"],
-  "Beverage": ["Coffee", "Tea", "Juice", "Smoothies"],
-  "Soup": ["Soups"],
+  Breakfast: ["Oatmeal", "Pancakes", "Eggs", "Smoothies"],
+  Snack: ["Fruit", "Veggies", "Nuts", "Granola Bars"],
+  Beverage: ["Coffee", "Tea", "Juice", "Smoothies"],
+  Soup: ["Soups"],
 };
 
 export const RECIPE_UNITS = {
   volume: [
-    { value: 'tsp', label: 'tsp' },
-    { value: 'tbsp', label: 'tbsp' },
-    { value: 'cup', label: 'cup' },
-    { value: 'fl oz', label: 'fl oz' },
-    { value: 'ml', label: 'ml' },
-    { value: 'l', label: 'l' },
+    { value: "tsp", label: "tsp" },
+    { value: "tbsp", label: "tbsp" },
+    { value: "cup", label: "cup" },
+    { value: "fl oz", label: "fl oz" },
+    { value: "ml", label: "ml" },
+    { value: "l", label: "l" },
   ],
   weight: [
-    { value: 'g', label: 'g' },
-    { value: 'kg', label: 'kg' },
-    { value: 'oz', label: 'oz' },
-    { value: 'lb', label: 'lb' },
+    { value: "g", label: "g" },
+    { value: "kg", label: "kg" },
+    { value: "oz", label: "oz" },
+    { value: "lb", label: "lb" },
   ],
   other: [
-    { value: 'piece', label: 'piece' },
-    { value: 'pinch', label: 'pinch' },
-    { value: 'to taste', label: 'to taste' },
-  ]
+    { value: "none", label: "none" },
+    { value: "small", label: "small" },
+    { value: "medium", label: "medium" },
+    { value: "large", label: "large" },
+    { value: "piece", label: "piece" },
+    { value: "pinch", label: "pinch" },
+    { value: "stick", label: "stick" },
+    { value: "to taste", label: "to taste" },
+  ],
 } as const;
 
-export type RecipeCategory = typeof RECIPE_CATEGORIES[number];
+export type RecipeCategory = (typeof RECIPE_CATEGORIES)[number];
 export type RecipeSubCategory = string;
-export type RecipeUnit = typeof RECIPE_UNITS[keyof typeof RECIPE_UNITS][number]['value'];
+export type RecipeUnit =
+  (typeof RECIPE_UNITS)[keyof typeof RECIPE_UNITS][number]["value"];
 
 export interface Recipe {
   id: string;
@@ -62,9 +68,10 @@ export interface Recipe {
   prepTime: number; // in minutes
   cookTime: number; // in minutes
   servings: number;
-  imageID?: string;
+  featured?: boolean; // optional field
+  imageID?: string; // optional field
   createdAt: Date;
   updatedAt: Date;
 }
 
-export type CreateRecipeInput = Omit<Recipe, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateRecipeInput = Omit<Recipe, "id" | "createdAt" | "updatedAt">;

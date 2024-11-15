@@ -8,20 +8,21 @@ datasource db {
 }
 
 model Recipe {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  difficulty  String
-  category    String
-  subCategory String
-  ingredients Json
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  difficulty   String
+  category     String
+  subCategory  String
+  ingredients  Json
   instructions Json
-  prepTime    Int
-  cookTime    Int
-  servings    Int
-  imageID    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  prepTime     Int
+  cookTime     Int
+  servings     Int
+  featured     Boolean  @default(false)
+  imageID      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("recipes")
 }
